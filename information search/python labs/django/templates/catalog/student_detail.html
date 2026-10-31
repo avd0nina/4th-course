@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}{{ student.full_name }}{% endblock %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">Студент</p><h1>{{ student.full_name }}</h1></div><div class="actions"><a class="button secondary" href="{% url 'student-update' student.pk %}">Изменить</a><a class="button danger" href="{% url 'student-delete' student.pk %}">Удалить</a></div></div>
+<dl class="details"><dt>ФИО</dt><dd>{{ student.full_name }}</dd><dt>Дата рождения</dt><dd>{{ student.birth_date|date:"d.m.Y" }}</dd><dt>Университет</dt><dd><a href="{{ student.university.get_absolute_url }}">{{ student.university.full_name }}</a></dd><dt>Год поступления</dt><dd>{{ student.enrollment_year }}</dd></dl>
+{% endblock %}

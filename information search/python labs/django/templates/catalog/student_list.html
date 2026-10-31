@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Студенты{% endblock %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">Справочник</p><h1>Студенты</h1></div><a class="button" href="{% url 'student-create' %}">+ Добавить</a></div>
+<form class="search" method="get"><input name="q" value="{{ request.GET.q }}" placeholder="Поиск по ФИО или университету"><select name="university"><option value="">Все университеты</option>{% for university in universities %}<option value="{{ university.pk }}" {% if request.GET.university == university.pk|stringformat:"s" %}selected{% endif %}>{{ university.short_name }}</option>{% endfor %}</select><button class="button secondary" type="submit">Найти</button></form>
+{% if students %}<div class="table-wrap"><table><tr><th>ФИО</th><th>Дата рождения</th><th>Университет</th><th>Год поступления</th><th></th></tr>{% for student in students %}<tr><td><a href="{{ student.get_absolute_url }}">{{ student.full_name }}</a></td><td>{{ student.birth_date|date:"d.m.Y" }}</td><td><a href="{{ student.university.get_absolute_url }}">{{ student.university.short_name }}</a></td><td>{{ student.enrollment_year }}</td><td class="row-actions"><a href="{% url 'student-update' student.pk %}">Изменить</a><a class="danger-link" href="{% url 'student-delete' student.pk %}">Удалить</a></td></tr>{% endfor %}</table></div>{% else %}<div class="empty">Студенты не найдены.</div>{% endif %}
+{% include "catalog/pagination.html" %}
+{% endblock %}

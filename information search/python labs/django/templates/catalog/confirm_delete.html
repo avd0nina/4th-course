@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% block title %}Удаление{% endblock %}
+{% block content %}
+<div class="narrow"><p class="eyebrow">Подтверждение</p><h1>Удалить «{{ object }}»?</h1><p>Это действие нельзя отменить.</p><form method="post" class="actions">{% csrf_token %}<button class="button danger" type="submit">Удалить</button><a class="button secondary" href="javascript:history.back()">Отмена</a></form></div>
+{% endblock %}

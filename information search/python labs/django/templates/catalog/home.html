@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Главная — Учебный реестр{% endblock %}
+{% block content %}
+<section class="hero">
+    <p class="eyebrow">Django CRUD</p>
+    <h1>Университеты и студенты</h1>
+    <p>Управляйте справочником университетов и связанными с ними студентами через веб-интерфейс.</p>
+    <div class="actions">
+        <a class="button" href="{% url 'university-list' %}">Открыть университеты</a>
+        <a class="button secondary" href="{% url 'student-list' %}">Открыть студентов</a>
+    </div>
+</section>
+<div class="stats">
+    <div><strong>{{ university_count }}</strong><span>университетов</span></div>
+    <div><strong>{{ student_count }}</strong><span>студентов</span></div>
+</div>
+{% endblock %}

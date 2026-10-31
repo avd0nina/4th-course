@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}{{ university.short_name }}{% endblock %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">Университет</p><h1>{{ university.full_name }}</h1><p class="tag">{{ university.short_name }}</p></div><div class="actions"><a class="button secondary" href="{% url 'university-update' university.pk %}">Изменить</a><a class="button danger" href="{% url 'university-delete' university.pk %}">Удалить</a></div></div>
+<dl class="details"><dt>Полное название</dt><dd>{{ university.full_name }}</dd><dt>Сокращенное название</dt><dd>{{ university.short_name }}</dd><dt>Дата создания</dt><dd>{{ university.founded_date|date:"d.m.Y" }}</dd></dl>
+<h2>Студенты университета</h2>
+{% if university.students.all %}<div class="table-wrap"><table><tr><th>ФИО</th><th>Дата рождения</th><th>Год поступления</th></tr>{% for student in university.students.all %}<tr><td><a href="{{ student.get_absolute_url }}">{{ student.full_name }}</a></td><td>{{ student.birth_date|date:"d.m.Y" }}</td><td>{{ student.enrollment_year }}</td></tr>{% endfor %}</table></div>{% else %}<p>Студентов пока нет.</p>{% endif %}
+{% endblock %}
