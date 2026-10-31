@@ -1,0 +1,212 @@
+Лабораторная работа №1
+Язык MySQL
+
+1. Вывести все строки из таблицы покупателей для продавца с номером 1001:
+
+SELECT *
+FROM cust
+WHERE snum = 1001;
+
+2. Вывести таблицу продавцов в порядке столбцов city, sname, snum, comm:
+
+SELECT city, sname, snum, comm
+FROM sal;
+
+3. Вывести рейтинг и имя каждого покупателя из San Jose:
+
+SELECT rating, cname
+FROM cust
+WHERE city = 'San Jose';
+
+4. Вывести номера продавцов из таблицы заказов без повторений:
+
+SELECT DISTINCT snum
+FROM ord;
+
+5. Вывести имя и город продавцов из Лондона с комиссионными строго больше 0.11:
+
+SELECT sname, city
+FROM sal
+WHERE city = 'London'
+  AND comm > 0.11;
+
+6. Вывести покупателей с рейтингом не больше 200, если они не находятся в Риме:
+
+SELECT *
+FROM cust
+WHERE rating <= 200
+  AND city <> 'Rome';
+
+7. Запросить всеми двумя способами заказы на 3 и 5 октября 1990 года.
+
+-- Способ 1: оператор IN
+SELECT *
+FROM ord
+WHERE odate IN ('03-OCT-90', '05-OCT-90');
+
+-- Способ 2: логическое условие OR
+SELECT *
+FROM ord
+WHERE odate = '03-OCT-90'
+   OR odate = '05-OCT-90';
+
+8. Вывести покупателей, чьи имена начинаются с буквы от A до G:
+
+SELECT *
+FROM cust
+WHERE LEFT(cname, 1) BETWEEN 'A' AND 'G';
+
+9. Вывести продавцов, в именах которых есть буква e:
+
+SELECT *
+FROM sal
+WHERE sname LIKE '%e%';
+
+10. Посчитать сумму всех заказов на 3 октября 1990 года:
+
+SELECT SUM(amt) AS total_amount
+FROM ord
+WHERE odate = '03-OCT-90';
+
+11. Посчитать сумму всех заказов продавца с номером 1001:
+
+SELECT SUM(amt) AS total_amount
+FROM ord
+WHERE snum = 1001;
+
+12. Вывести наибольший заказ для каждого продавца:
+
+SELECT snum, MAX(amt) AS max_amount
+FROM ord
+GROUP BY snum;
+
+13. Вывести имя покупателя, чьё имя является первым в алфавитном порядке
+среди имён, заканчивающихся на букву s:
+
+SELECT cname
+FROM cust
+WHERE cname LIKE '%s'
+ORDER BY cname
+LIMIT 1;
+
+14. Вывести средние комиссионные в каждом городе:
+
+SELECT city, AVG(comm) AS average_comm
+FROM sal
+GROUP BY city;
+
+15. Для каждого заказа на 3 октября вывести его номер, стоимость в евро,
+имя продавца и комиссионные продавца за этот заказ (1 доллар = 0.8 евро):
+
+SELECT ord.onum,
+       ord.amt * 0.8 AS amount_euro,
+       sal.sname,
+       ord.amt * sal.comm AS seller_commission
+FROM ord
+JOIN sal ON ord.snum = sal.snum
+WHERE ord.odate = '03-OCT-90';
+
+16. Вывести номера заказов по возрастанию, имена продавцов и покупателей
+заказов, продавцы которых находятся в Лондоне или Риме:
+
+SELECT ord.onum, sal.sname, cust.cname
+FROM ord
+JOIN sal ON ord.snum = sal.snum
+JOIN cust ON ord.cnum = cust.cnum
+WHERE sal.city IN ('London', 'Rome')
+ORDER BY ord.onum;
+
+17. Вывести имена продавцов в алфавитном порядке, общую стоимость их
+заказов, совершённых до 5 октября, и полученные комиссионные:
+
+SELECT sal.sname,
+       SUM(ord.amt) AS total_amount,
+       SUM(ord.amt * sal.comm) AS total_commission
+FROM sal
+JOIN ord ON sal.snum = ord.snum
+WHERE ord.odate < '05-OCT-90'
+GROUP BY sal.sname
+ORDER BY sal.sname;
+
+18. Вывести номера заказов, стоимость, имена продавцов и покупателей,
+если города продавца и покупателя начинаются с букв от L до R:
+
+SELECT ord.onum, ord.amt, sal.sname, cust.cname
+FROM ord
+JOIN sal ON ord.snum = sal.snum
+JOIN cust ON ord.cnum = cust.cnum
+WHERE LEFT(sal.city, 1) BETWEEN 'L' AND 'R'
+  AND LEFT(cust.city, 1) BETWEEN 'L' AND 'R';
+
+19. Вывести все пары покупателей, обслуживаемых одним продавцом,
+исключив пары покупателя с самим собой и обратные пары:
+
+SELECT first.cname AS customer1, second.cname AS customer2
+FROM cust AS first
+JOIN cust AS second
+  ON first.snum = second.snum
+ AND first.cnum < second.cnum;
+
+20. С помощью подзапроса вывести имена покупателей, чьи продавцы имеют
+комиссионные меньше 0.13:
+
+SELECT cname
+FROM cust
+WHERE snum IN (
+    SELECT snum
+    FROM sal
+    WHERE comm < 0.13
+);
+
+21. Создать копию таблицы продавцов одновременно с копированием данных:
+
+CREATE TABLE sal_copy AS
+SELECT *
+FROM sal;
+
+-- Проверка структуры и данных:
+DESC sal;
+DESC sal_copy;
+
+SELECT *
+FROM sal;
+
+SELECT *
+FROM sal_copy;
+
+22. Вставить две новые записи в таблицу продавцов, вывести таблицу,
+удалить одну новую запись и снова вывести таблицу:
+
+INSERT INTO sal (snum, sname, city, comm)
+VALUES (1010, 'Taylor', 'Paris', 0.14);
+
+INSERT INTO sal (snum, sname, city, comm)
+VALUES (1011, 'Wilson', 'Madrid', 0.12);
+
+SELECT *
+FROM sal;
+
+DELETE FROM sal
+WHERE snum = 1010;
+
+SELECT *
+FROM sal;
+
+23. Вставить две строки в таблицу продавцов, вывести таблицу,
+увеличить в два раза комиссионные всех продавцов и вывести таблицу
+после изменения:
+
+INSERT INTO sal (snum, sname, city, comm)
+VALUES (1012, 'Brown', 'Berlin', 0.10);
+
+INSERT INTO sal (snum, sname, city, comm)
+VALUES (1013, 'Davis', 'Rome', 0.11);
+
+SELECT *
+FROM sal;
+
+UPDATE sal
+SET comm = comm * 2;
+
+SELECT *
+FROM sal;
