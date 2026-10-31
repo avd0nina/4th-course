@@ -1,0 +1,28 @@
+{% load static %}
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Университеты и студенты{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'catalog/style.css' %}">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container nav">
+            <a class="brand" href="{% url 'home' %}">Учебный реестр</a>
+            <nav>
+                <a href="{% url 'university-list' %}">Университеты</a>
+                <a href="{% url 'student-list' %}">Студенты</a>
+                <a href="/admin/">Администрирование</a>
+            </nav>
+        </div>
+    </header>
+    <main class="container">
+        {% if messages %}
+            {% for message in messages %}<div class="message {{ message.tags }}">{{ message }}</div>{% endfor %}
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
