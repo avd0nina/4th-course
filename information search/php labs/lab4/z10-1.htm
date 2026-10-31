@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Выбор таблиц базы study</title>
+</head>
+<body>
+    <h2>Выберите структуру и/или содержимое таблиц базы study</h2>
+    <form action="z10-2.php" method="get">
+        <fieldset>
+            <legend>Структура таблиц</legend>
+            <label><input type="checkbox" name="structure[]" value="sal"> sal</label><br>
+            <label><input type="checkbox" name="structure[]" value="cust"> cust</label><br>
+            <label><input type="checkbox" name="structure[]" value="ord"> ord</label>
+        </fieldset>
+        <fieldset>
+            <legend>Содержимое таблиц</legend>
+            <label><input type="checkbox" name="content[]" value="sal"> sal</label><br>
+            <label><input type="checkbox" name="content[]" value="cust"> cust</label><br>
+            <label><input type="checkbox" name="content[]" value="ord"> ord</label>
+        </fieldset>
+        <button type="submit">Вывести</button>
+    </form>
+</body>
+</html>
