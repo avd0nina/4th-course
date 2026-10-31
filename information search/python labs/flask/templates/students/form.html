@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} — Учебная база{% endblock %}
+{% block content %}
+<div class="form-card">
+  <h1>{{ title }}</h1>
+  {% if not form.university_id.choices %}<div class="alert warning">Сначала добавьте хотя бы один университет.</div>{% endif %}
+  <form method="post">
+    {{ form.hidden_tag() }}
+    {% for field in [form.full_name, form.birth_date, form.university_id, form.admission_year] %}
+      <div class="field">{{ field.label }}{{ field(class_="input") }}{% for error in field.errors %}<span class="error">{{ error }}</span>{% endfor %}</div>
+    {% endfor %}
+    {{ form.submit(class_="button", disabled=not form.university_id.choices) }} <a href="{{ url_for('students') }}">Отмена</a>
+  </form>
+</div>
+{% endblock %}
