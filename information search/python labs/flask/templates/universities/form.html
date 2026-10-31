@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} — Учебная база{% endblock %}
+{% block content %}
+<div class="form-card">
+  <h1>{{ title }}</h1>
+  {% for error in form.form_errors %}<div class="alert danger">{{ error }}</div>{% endfor %}
+  <form method="post">
+    {{ form.hidden_tag() }}
+    {% for field in [form.full_name, form.short_name, form.foundation_date] %}
+      <div class="field">{{ field.label }}{{ field(class_="input") }}{% for error in field.errors %}<span class="error">{{ error }}</span>{% endfor %}</div>
+    {% endfor %}
+    {{ form.submit(class_="button") }} <a href="{{ url_for('universities') }}">Отмена</a>
+  </form>
+</div>
+{% endblock %}
