@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} — Учебная база{% endblock %}
+{% block content %}
+<div class="form-card">
+  <h1>{{ title }}</h1>
+  <form method="post">
+    {{ form.hidden_tag() }}
+    {% for field in form if field.type not in ['CSRFTokenField', 'SubmitField'] %}
+      <div class="field">
+        {{ field.label }}
+        {{ field(class_="input") }}
+        {% for error in field.errors %}<span class="error">{{ error }}</span>{% endfor %}
+      </div>
+    {% endfor %}
+    {{ form.submit(class_="button") }}
+  </form>
+</div>
+{% endblock %}

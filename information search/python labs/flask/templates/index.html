@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Главная — Учебная база{% endblock %}
+{% block content %}
+<section class="hero">
+  <h1>Университеты и студенты</h1>
+  <p>Flask-приложение с полным CRUD-доступом к учебной базе данных.</p>
+  <div class="cards">
+    <a class="card" href="{{ url_for('universities') }}"><strong>{{ university_count }}</strong><span>университетов</span></a>
+    <a class="card" href="{{ url_for('students') }}"><strong>{{ student_count }}</strong><span>студентов</span></a>
+  </div>
+</section>
+{% endblock %}
